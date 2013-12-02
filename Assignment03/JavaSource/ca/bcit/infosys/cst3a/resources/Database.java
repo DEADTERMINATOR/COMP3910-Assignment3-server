@@ -97,7 +97,7 @@ public class Database {
         }
     }
 	
-	public Quiz getQuiz(int week) {
+/*	public Quiz getQuiz(int week) {
 		PreparedStatement statement = null;
         Connection connection = null;
         try {
@@ -110,5 +110,6 @@ public class Database {
                 if(result.next()) {
                 	
                 }
-	}
+        }
+	}*/
 }

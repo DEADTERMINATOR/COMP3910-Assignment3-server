@@ -49,6 +49,6 @@
     </servlet-mapping>  
   <context-param>
     <param-name>javax.ws.rs.Application</param-name>
-    <param-value>org.jboss.samples.rs.webservices.MyRESTApplication</param-value>
+    <param-value>ca.bcit.infosys.cst3a.resources.MyRESTApplication</param-value>
   </context-param>
 </web-app>
