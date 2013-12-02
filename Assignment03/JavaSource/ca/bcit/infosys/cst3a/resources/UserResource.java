@@ -1,0 +1,52 @@
+package ca.bcit.infosys.cst3a.resources;
+
+import javax.ejb.EJB;
+import javax.ejb.Stateless;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.Response;
+
+import ca.bcit.infosys.cst3a.model.User;
+
+import java.security.SecureRandom;
+import java.math.BigInteger;
+
+@Path("/")
+@Stateless
+public class UserResource {
+	@EJB
+	private Database db;
+	private String token = null;
+	
+	@GET
+	@Path("/userlogin")
+	@Produces("application/xml")
+	public Response getUser(@QueryParam("username") String username, @QueryParam("password") String password) {
+		User user = db.getUser(username);
+		if(user != null) {
+			boolean validUser = db.validate(user, password);
+			if(validUser) {
+				token = nextSessionId();
+				return Response.status(200).entity(token).build();
+			}
+		}
+		return Response.status(403).build();
+	}
+
+	@POST
+	@Path("/newuser")
+	@Consumes("application/xml")
+	public boolean newUser(User user) {
+		return db.add(user);
+	}
+
+	public String nextSessionId() {
+		SecureRandom random = new SecureRandom();
+		return new BigInteger(130, random).toString(32);
+	}
+}
