@@ -71,7 +71,7 @@ public class Database {
                 User duplicateUser = getUser(user.getUsername());
                 if(duplicateUser == null) {
                 	statement = connection.prepareStatement("INSERT INTO User "
-                			+ "VALUES (?, ?, ?, ?, ?");
+                	        + "VALUES (?, ?, ?, ?, ?)");
                 	statement.setString(1, user.getStudentNo());
                 	statement.setString(2, user.getUsername());
                 	statement.setString(3, user.getPassword());
@@ -83,11 +83,12 @@ public class Database {
                 	PreparedStatement insertUserQuiz = connection.prepareStatement("INSERT INTO UserQuiz VALUES (?, ?, ?)");
                 	while(counter <= 14) {
                 		getQuizID.setInt(1, counter);
-                		ResultSet results = statement.executeQuery();
+                		ResultSet results = getQuizID.executeQuery();
                 		int quizID = results.getInt("quizID");
                 		insertUserQuiz.setString(1, user.getUsername());
                 		insertUserQuiz.setInt(2, quizID);
                 		insertUserQuiz.setInt(3, -1);
+                		insertUserQuiz.executeUpdate();
                 		counter++;
                 	}
                 	return true;

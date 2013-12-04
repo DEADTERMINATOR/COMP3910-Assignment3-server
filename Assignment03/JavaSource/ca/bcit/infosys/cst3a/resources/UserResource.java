@@ -42,7 +42,7 @@ public class UserResource {
 
 	@POST
 	@Path("/newuser")
-	@Consumes("text/xml")
+	@Consumes("application/xml")
 	public String newUser(User user) {
 		boolean successful = db.add(user);
 		if(successful) {
