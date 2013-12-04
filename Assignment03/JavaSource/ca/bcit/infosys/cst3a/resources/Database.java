@@ -72,7 +72,7 @@ public class Database {
                 if(duplicateUser == null) {
                 	statement = connection.prepareStatement("INSERT INTO User "
                 			+ "VALUES (?, ?, ?, ?, ?");
-                	statement.setString(1, user.getStudentID());
+                	statement.setString(1, user.getStudentNo());
                 	statement.setString(2, user.getUsername());
                 	statement.setString(3, user.getPassword());
                 	statement.setString(4, user.getFirstName());

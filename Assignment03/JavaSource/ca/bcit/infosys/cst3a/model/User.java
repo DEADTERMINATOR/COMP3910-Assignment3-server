@@ -1,26 +1,26 @@
 package ca.bcit.infosys.cst3a.model;
 
 public class User {
-	private String studentID;
+	private String studentNo;
 	private String username;
 	private String password;
 	private String firstName;
 	private String lastName;
 	
 	public User(String studentID, String username, String password, String firstName, String lastName) {
-		this.studentID = studentID;
+		this.studentNo = studentID;
 		this.username = username;
 		this.password = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
 	}
 	
-	public String getStudentID() {
-		return studentID;
+	public String getStudentNo() {
+		return studentNo;
 	}
 	
-	public void setStudentID(String studentID) {
-		this.studentID = studentID;
+	public void setStudentNo(String studentNo) {
+		this.studentNo = studentNo;
 	}
 	
 	public String getUsername() {
