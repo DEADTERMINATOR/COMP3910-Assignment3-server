@@ -4,6 +4,11 @@ public class Answer {
 	private int answerID;
 	private String answer;
 	
+	public Answer(int answerID, String answer) {
+		this.answerID = answerID;
+		this.answer = answer;
+	}
+	
 	public int getAnswerID() {
 		return answerID;
 	}

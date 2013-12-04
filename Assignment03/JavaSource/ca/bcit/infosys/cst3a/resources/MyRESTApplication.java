@@ -11,6 +11,7 @@ public class MyRESTApplication extends Application {
 	public MyRESTApplication(){
 	     //singletons.add(new HelloWorldResource());
 		 empty.add(UserResource.class);
+		 //empty.add(QuizResource.class);
 	}
 	
 	@Override

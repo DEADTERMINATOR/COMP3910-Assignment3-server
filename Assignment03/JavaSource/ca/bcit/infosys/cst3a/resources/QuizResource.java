@@ -1,21 +1,24 @@
 package ca.bcit.infosys.cst3a.resources;
 
+import javax.ejb.EJB;
+import javax.ejb.Stateless;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 
-//import ca.bcit.infosys.inventory.model.Supplier;
+import ca.bcit.infosys.cst3a.model.Quiz;
 
+/*@Path("/")
+@Stateless
 public class QuizResource {
-	private Database db = new Database();
+	@EJB
+	private Database db;
 	
 	@GET
 	@Path("/quizzes/{week_of_class}")
-    public String sayHello() {
-        return "Hello";
-    }
-/*	public Quiz getQuiz(@PathParam("week_of_class") int week) {
+	@Produces("application/xml")
+	public Quiz getQuiz(@PathParam("week_of_class") int week) {
 		return db.getQuiz(week);
 	}
-*/
-}
+}*/

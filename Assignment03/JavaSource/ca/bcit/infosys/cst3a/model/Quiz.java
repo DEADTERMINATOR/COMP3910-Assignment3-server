@@ -5,8 +5,17 @@ import java.util.ArrayList;
 public class Quiz {
 	private int quizID;
 	private int weekNo;
-	private ArrayList<Question> questions = new ArrayList<Question>();
+	private ArrayList<Question> questions;
 	private int score;
+	private int averageScore;
+	
+	public Quiz(int quizID, int weekNo, ArrayList<Question> questions, int score, int averageScore) {
+		this.quizID = quizID;
+		this.weekNo = weekNo;
+		this.questions = questions;
+		this.score = score;
+		this.averageScore = averageScore;
+	}
 	
 	public int getQuizID() {
 		return quizID;
@@ -40,5 +49,11 @@ public class Quiz {
 		this.score = score;
 	}
 	
+	public int getAverageScore() {
+		return averageScore;
+	}
 	
+	public void setAverageScore(int averageScore) {
+		this.averageScore = averageScore;
+	}
 }

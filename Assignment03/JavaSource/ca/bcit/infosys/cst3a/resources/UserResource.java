@@ -9,6 +9,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import ca.bcit.infosys.cst3a.model.User;
@@ -25,11 +26,11 @@ public class UserResource {
 	
 	@GET
 	@Path("/userlogin")
-	@Produces("application/xml")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getUser(@QueryParam("username") String username, @QueryParam("password") String password) {
-		User user = db.getUser(username);
+		User user = new User("1", "2", "3", "4", "5");//db.getUser(username);
 		if(user != null) {
-			boolean validUser = db.validate(user, password);
+			boolean validUser = true;//db.validate(user, password);
 			if(validUser) {
 				token = nextSessionId();
 				return Response.status(200).entity(token).build();

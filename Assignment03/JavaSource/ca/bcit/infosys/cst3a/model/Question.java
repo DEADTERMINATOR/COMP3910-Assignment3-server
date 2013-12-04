@@ -6,7 +6,12 @@ public class Question {
 	private int questionID;
 	private String question;
 	private ArrayList<Answer> answers;
-	private Answer selectedAnswer;
+	
+	public Question(int questionID, String question, ArrayList<Answer> answers) {
+		this.questionID = questionID;
+		this.question = question;
+		this.answers = answers;
+	}
 	
 	public int getQuestionID() {
 		return questionID;
@@ -31,13 +36,4 @@ public class Question {
 	public void setAnswers(ArrayList<Answer> answers) {
 		this.answers = answers;
 	}
-
-	public Answer getSelectedAnswer() {
-		return selectedAnswer;
-	}
-
-	public void setSelectedAnswer(Answer selectedAnswer) {
-		this.selectedAnswer = selectedAnswer;
-	}
-	
 }
