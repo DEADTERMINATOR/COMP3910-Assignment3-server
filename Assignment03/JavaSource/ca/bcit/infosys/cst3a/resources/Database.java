@@ -31,7 +31,7 @@ public class Database {
                 statement.setString(1, username);
                 ResultSet result = statement.executeQuery();
                 if(result.next()) {
-                	User user = new User(result.getString("studentID"), result.getString("username"),
+                	User user = new User(result.getString("studentNo"), result.getString("username"),
                 			result.getString("password"), result.getString("firstName"), result.getString("lastName"));
                 	return user;
                 }

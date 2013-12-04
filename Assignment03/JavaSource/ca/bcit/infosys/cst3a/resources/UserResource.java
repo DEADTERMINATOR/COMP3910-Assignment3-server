@@ -4,6 +4,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -26,7 +27,7 @@ public class UserResource {
 	
 	@GET
 	@Path("/userlogin")
-	@Produces("application/xml")
+	@Produces("text/xml")
 	public Response getUser(@QueryParam("username") String username, @QueryParam("password") String password) {
 		User user = db.getUser(username);
 		if(user != null) {
