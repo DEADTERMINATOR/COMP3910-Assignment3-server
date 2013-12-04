@@ -26,11 +26,11 @@ public class UserResource {
 	
 	@GET
 	@Path("/userlogin")
-	@Produces(MediaType.APPLICATION_JSON)
+	@Produces("application/xml")
 	public Response getUser(@QueryParam("username") String username, @QueryParam("password") String password) {
-		User user = new User("1", "2", "3", "4", "5");//db.getUser(username);
+		User user = db.getUser(username);
 		if(user != null) {
-			boolean validUser = true;//db.validate(user, password);
+			boolean validUser = db.validate(user, password);
 			if(validUser) {
 				token = nextSessionId();
 				return Response.status(200).entity(token).build();
