@@ -13,6 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import ca.bcit.infosys.cst3a.model.ActiveUsers;
 import ca.bcit.infosys.cst3a.model.User;
 
 import java.security.SecureRandom;
@@ -34,6 +35,7 @@ public class UserResource {
 			boolean validUser = db.validate(user, password);
 			if(validUser) {
 				token = nextSessionId();
+				ActiveUsers.addLoggedInUser(token, user);
 				return Response.status(200).entity(token).build();
 			}
 		}
@@ -51,6 +53,13 @@ public class UserResource {
 		return "failure";
 	}
 
+	@GET
+	@Path("/logout")
+	@Produces("text/xml")
+	public void logout(@QueryParam("token") String token) {
+		ActiveUsers.removeLoggedInUser(token);
+	}
+	
 	public String nextSessionId() {
 		SecureRandom random = new SecureRandom();
 		return new BigInteger(130, random).toString(32);
