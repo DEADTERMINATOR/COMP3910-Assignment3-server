@@ -43,8 +43,12 @@ public class UserResource {
 	@POST
 	@Path("/newuser")
 	@Consumes("application/xml")
-	public boolean newUser(User user) {
-		return db.add(user);
+	public String newUser(User user) {
+		boolean successful = db.add(user);
+		if(successful) {
+			return "success";
+		}
+		return "failure";
 	}
 
 	public String nextSessionId() {
