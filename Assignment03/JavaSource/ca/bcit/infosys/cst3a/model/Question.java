@@ -10,7 +10,7 @@ public class Question {
 	private int questionID;
 	private String question;
 
-    @XmlElement(name = "answers")
+    @XmlElement(name = "answersArray")
 	private ArrayList<Answer> answers;
 
     public Question(){}
