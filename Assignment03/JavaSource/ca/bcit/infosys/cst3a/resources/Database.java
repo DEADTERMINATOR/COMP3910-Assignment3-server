@@ -108,6 +108,7 @@ public class Database {
         		ArrayList<Question> questions = new ArrayList<Question>();
         		connection = data.getConnection();
         		statement = connection.prepareStatement("SELECT quizID FROM Quiz WHERE week = ?");
+        		statement.setInt(1, week);
         		ResultSet quizResult = statement.executeQuery();
         		int quizID = quizResult.getInt("quizID");
         		statement.close();
@@ -119,6 +120,7 @@ public class Database {
         			String question = questionResult.getString("question");
         			ArrayList<Answer> answers = new ArrayList<Answer>();
         			statement = connection.prepareStatement("SELECT * FROM Answer WHERE questionID = ?");
+        			statement.setInt(1, questionID);
         			ResultSet answerResult = statement.executeQuery();
         			if(answerResult.next()) {
         				int answerID = answerResult.getInt("answerID");
