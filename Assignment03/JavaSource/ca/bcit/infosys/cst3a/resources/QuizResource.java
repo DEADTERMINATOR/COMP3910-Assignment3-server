@@ -37,7 +37,7 @@ public class QuizResource {
 	@Path("/mark")
 	@Consumes("application/xml")
 	public String scoreQuiz(@QueryParam("token") String token, @QueryParam("week") int week, 
-							@QueryParam("quizid") int quizID, @QueryParam("answer") ArrayList<String> answers) {
+							@QueryParam("quizid") int quizID, @QueryParam("answerID") ) {
 		boolean validUser = ActiveUsers.validateUser(token);
 		if(!validUser) {
 			return null;

@@ -1,5 +1,9 @@
 package ca.bcit.infosys.cst3a.model;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(namespace = "ca.bcit.infosys.cst3a.model")
 public class Answer {
 	private int answerID;
 	private String answer;
@@ -9,6 +13,7 @@ public class Answer {
 		this.answer = answer;
 	}
 	
+    @XmlElement(name = "answerID")
 	public int getAnswerID() {
 		return answerID;
 	}
@@ -17,6 +22,7 @@ public class Answer {
 		this.answerID = answerID;
 	}
 	
+    @XmlElement(name = "answer")
 	public String getAnswer() {
 		return answer;
 	}
