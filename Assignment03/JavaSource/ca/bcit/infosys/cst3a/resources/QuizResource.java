@@ -1,6 +1,7 @@
 package ca.bcit.infosys.cst3a.resources;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -41,7 +42,7 @@ public class QuizResource {
 	@Path("/mark")
 	@Consumes("application/xml")
 	public String scoreQuiz(@QueryParam("token") String token, @QueryParam("week") int week, 
-							@QueryParam("quizid") int quizID, @QueryParam("answerID") ArrayList<Integer> userAnswers) {
+							@QueryParam("quizid") int quizID, @QueryParam("answerID") List<Integer> userAnswers) {
 		boolean validUser = ActiveUsers.validateUser(token);
 		if(!validUser) {
 			return null;

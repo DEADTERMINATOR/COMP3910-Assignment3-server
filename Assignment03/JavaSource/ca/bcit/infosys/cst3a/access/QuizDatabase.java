@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
@@ -125,7 +126,7 @@ public class QuizDatabase {
         }
 	}
 	
-	public int checkAnswers(int week, User user, ArrayList<Integer> userAnswers) {
+	public int checkAnswers(int week, User user, List<Integer> userAnswers) {
 		int score = 0;
 		PreparedStatement answerStatement = null;
 		PreparedStatement questionStatement = null;
