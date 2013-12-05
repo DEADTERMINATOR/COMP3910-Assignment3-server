@@ -167,7 +167,7 @@ public class Database {
         try {
             try {
             	connection = data.getConnection();
-                statement = connection.prepareStatement("SELECT quizID FROM UserQuiz WHERE week = ?");
+                statement = connection.prepareStatement("SELECT week FROM UserQuiz WHERE week = ?");
                 statement.setInt(1, week);
                 ResultSet results = statement.executeQuery();
                 if(results.next()) {
