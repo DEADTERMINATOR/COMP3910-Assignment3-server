@@ -120,7 +120,6 @@ public class Database {
         		questionStatement = connection.prepareStatement("SELECT * FROM Question WHERE week = ?");
         		questionStatement.setInt(1, week);
         		ResultSet questionResult = questionStatement.executeQuery();
-        		questionStatement.close();
         		while(questionResult.next()) {
         			int questionID = questionResult.getInt("questionID");
         			String question = questionResult.getString("question");
@@ -134,6 +133,7 @@ public class Database {
         				answers.add(new Answer(answerID, answer));
         			}
         			questions.add(new Question(questionID, question, answers));
+        			questionStatement.close();
         			answerStatement.close();
         		}
         		if(!questions.isEmpty()) {
