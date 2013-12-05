@@ -107,11 +107,11 @@ public class Database {
         	try {
         		ArrayList<Question> questions = new ArrayList<Question>();
         		connection = data.getConnection();
-        		statement = connection.prepareStatement("SELECT quizID FROM Quiz WHERE weekNo = ?");
+        		statement = connection.prepareStatement("SELECT quizID FROM Quiz WHERE week = ?");
         		ResultSet quizResult = statement.executeQuery();
         		int quizID = quizResult.getInt("quizID");
         		statement.close();
-        		statement = connection.prepareStatement("SELECT * FROM Question WHERE weekNo = ?");
+        		statement = connection.prepareStatement("SELECT * FROM Question WHERE week = ?");
         		statement.setInt(1, week);
         		ResultSet questionResult = statement.executeQuery();
         		if(questionResult.next()) {
@@ -136,7 +136,7 @@ public class Database {
         				statement.setString(1, user.getUsername());
         				ResultSet avgScoreResult = statement.executeQuery();
         				int avgScore = avgScoreResult.getInt("average");
-        				statement = connection.prepareStatement("SELECT score FROM UserQuiz WHERE weekNo = ?");
+        				statement = connection.prepareStatement("SELECT score FROM UserQuiz WHERE week = ?");
         				statement.setInt(1, week);
         				ResultSet scoreResult = statement.executeQuery();
         				int score = scoreResult.getInt("score");
@@ -167,7 +167,7 @@ public class Database {
         try {
             try {
             	connection = data.getConnection();
-                statement = connection.prepareStatement("SELECT quizID FROM UserQuiz WHERE weekNo = ?");
+                statement = connection.prepareStatement("SELECT quizID FROM UserQuiz WHERE week = ?");
                 statement.setInt(1, week);
                 ResultSet results = statement.executeQuery();
                 if(results.next()) {
