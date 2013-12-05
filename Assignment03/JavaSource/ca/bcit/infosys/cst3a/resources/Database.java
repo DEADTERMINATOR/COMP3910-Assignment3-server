@@ -100,47 +100,54 @@ public class Database {
     }
 	
 	public Quiz getQuiz(int week, User user) {
-		PreparedStatement statement = null;
+		PreparedStatement quizStatement = null;
+		PreparedStatement questionStatement = null;
+		PreparedStatement answerStatement = null;
+		PreparedStatement avgStatement = null;
+		PreparedStatement userQuizStatement = null;
         Connection connection = null;
         boolean quizTaken = quizTaken(week, user);
         try {
         	try {
         		ArrayList<Question> questions = new ArrayList<Question>();
         		connection = data.getConnection();
-        		statement = connection.prepareStatement("SELECT quizID FROM Quiz WHERE week = ?");
-        		statement.setInt(1, week);
-        		ResultSet quizResult = statement.executeQuery();
+        		quizStatement = connection.prepareStatement("SELECT quizID FROM Quiz WHERE week = ?");
+        		quizStatement.setInt(1, week);
+        		ResultSet quizResult = quizStatement.executeQuery();
         		int quizID = quizResult.getInt("quizID");
-        		statement.close();
-        		statement = connection.prepareStatement("SELECT * FROM Question WHERE week = ?");
-        		statement.setInt(1, week);
-        		ResultSet questionResult = statement.executeQuery();
+        		quizStatement.close();
+        		questionStatement = connection.prepareStatement("SELECT * FROM Question WHERE week = ?");
+        		questionStatement.setInt(1, week);
+        		ResultSet questionResult = questionStatement.executeQuery();
+        		questionStatement.close();
         		while(questionResult.next()) {
         			int questionID = questionResult.getInt("questionID");
         			String question = questionResult.getString("question");
         			ArrayList<Answer> answers = new ArrayList<Answer>();
-        			statement = connection.prepareStatement("SELECT * FROM Answer WHERE questionID = ?");
-        			statement.setInt(1, questionID);
-        			ResultSet answerResult = statement.executeQuery();
+        			answerStatement = connection.prepareStatement("SELECT * FROM Answer WHERE questionID = ?");
+        			answerStatement.setInt(1, questionID);
+        			ResultSet answerResult = answerStatement.executeQuery();
         			while(answerResult.next()) {
         				int answerID = answerResult.getInt("answerID");
         				String answer = answerResult.getString("answer");
         				answers.add(new Answer(answerID, answer));
         			}
         			questions.add(new Question(questionID, question, answers));
+        			answerStatement.close();
         		}
         		if(!questions.isEmpty()) {
         			if(!quizTaken) {
         				return new Quiz(quizID, week, questions, -1, -1);
         			}
         			else {
-        				statement = connection.prepareStatement("SELECT AVG(score) AS 'average' FROM UserQuiz WHERE username = ?");
-        				statement.setString(1, user.getUsername());
-        				ResultSet avgScoreResult = statement.executeQuery();
+        				avgStatement = connection.prepareStatement("SELECT AVG(score) AS 'average' FROM UserQuiz WHERE username = ?");
+        				avgStatement.setString(1, user.getUsername());
+        				ResultSet avgScoreResult = avgStatement.executeQuery();
         				int avgScore = avgScoreResult.getInt("average");
-        				statement = connection.prepareStatement("SELECT score FROM UserQuiz WHERE week = ?");
-        				statement.setInt(1, week);
-        				ResultSet scoreResult = statement.executeQuery();
+        				avgStatement.close();
+        				userQuizStatement = connection.prepareStatement("SELECT score FROM UserQuiz WHERE week = ?");
+        				userQuizStatement.setInt(1, week);
+        				ResultSet scoreResult = userQuizStatement.executeQuery();
         				int score = scoreResult.getInt("score");
         				return new Quiz(quizID, week, questions, score, avgScore);
         			}
@@ -148,8 +155,20 @@ public class Database {
         		return null;
         	}
             finally {
-                if(statement != null) {
-                    statement.close();
+                if(quizStatement != null) {
+                    quizStatement.close();
+                }
+                if(questionStatement != null) {
+                	questionStatement.close();
+                }
+                if(answerStatement != null) {
+                	answerStatement.close();
+                }
+                if(avgStatement != null) {
+                	avgStatement.close();
+                }
+                if(userQuizStatement != null) {
+                	userQuizStatement.close();
                 }
                 if(connection != null) {
                     connection.close();
