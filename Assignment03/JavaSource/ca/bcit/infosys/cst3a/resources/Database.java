@@ -115,14 +115,14 @@ public class Database {
         		statement = connection.prepareStatement("SELECT * FROM Question WHERE week = ?");
         		statement.setInt(1, week);
         		ResultSet questionResult = statement.executeQuery();
-        		if(questionResult.next()) {
+        		while(questionResult.next()) {
         			int questionID = questionResult.getInt("questionID");
         			String question = questionResult.getString("question");
         			ArrayList<Answer> answers = new ArrayList<Answer>();
         			statement = connection.prepareStatement("SELECT * FROM Answer WHERE questionID = ?");
         			statement.setInt(1, questionID);
         			ResultSet answerResult = statement.executeQuery();
-        			if(answerResult.next()) {
+        			while(answerResult.next()) {
         				int answerID = answerResult.getInt("answerID");
         				String answer = answerResult.getString("answer");
         				answers.add(new Answer(answerID, answer));
@@ -187,7 +187,7 @@ public class Database {
             }
         }
         catch (SQLException ex) {
-            System.out.println("Error getting quiz");
+            System.out.println("Error checking if the quiz was taken");
             ex.printStackTrace();
             return false;
         }
