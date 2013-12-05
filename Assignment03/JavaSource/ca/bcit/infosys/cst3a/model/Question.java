@@ -10,7 +10,6 @@ public class Question {
 	private int questionID;
 	private String question;
 
-    @XmlElement(name = "answersArray")
 	private ArrayList<Answer> answersArray;
 
     public Question(){}
@@ -38,6 +37,7 @@ public class Question {
 		this.question = question;
 	}
 	
+	@XmlElement(name = "answersArray")
 	public ArrayList<Answer> getAnswersArray() {
 		return answersArray;
 	}
