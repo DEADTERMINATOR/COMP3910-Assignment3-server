@@ -143,11 +143,13 @@ public class Database {
         				avgStatement = connection.prepareStatement("SELECT AVG(score) AS 'average' FROM UserQuiz WHERE username = ?");
         				avgStatement.setString(1, user.getUsername());
         				ResultSet avgScoreResult = avgStatement.executeQuery();
+        				avgScoreResult.next();
         				int avgScore = avgScoreResult.getInt("average");
         				avgStatement.close();
         				userQuizStatement = connection.prepareStatement("SELECT score FROM UserQuiz WHERE week = ?");
         				userQuizStatement.setInt(1, week);
         				ResultSet scoreResult = userQuizStatement.executeQuery();
+        				scoreResult.next();
         				int score = scoreResult.getInt("score");
         				return new Quiz(quizID, week, questions, score, avgScore);
         			}
