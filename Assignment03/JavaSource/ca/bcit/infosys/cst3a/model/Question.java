@@ -11,14 +11,14 @@ public class Question {
 	private String question;
 
     @XmlElement(name = "answersArray")
-	private ArrayList<Answer> answers;
+	private ArrayList<Answer> answersArray;
 
     public Question(){}
     
-	public Question(int questionID, String question, ArrayList<Answer> answers) {
+	public Question(int questionID, String question, ArrayList<Answer> answersArray) {
 		this.questionID = questionID;
 		this.question = question;
-		this.answers = answers;
+		this.answersArray = answersArray;
 	}
     @XmlElement(name = "questionID")
 	public int getQuestionID() {
@@ -38,11 +38,11 @@ public class Question {
 		this.question = question;
 	}
 	
-	public ArrayList<Answer> getAnswers() {
-		return answers;
+	public ArrayList<Answer> getAnswersArray() {
+		return answersArray;
 	}
 	
-	public void setAnswers(ArrayList<Answer> answers) {
-		this.answers = answers;
+	public void setAnswers(ArrayList<Answer> answersArray) {
+		this.answersArray = answersArray;
 	}
 }
