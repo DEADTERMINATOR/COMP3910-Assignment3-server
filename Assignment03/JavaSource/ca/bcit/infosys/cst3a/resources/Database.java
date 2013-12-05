@@ -116,7 +116,6 @@ public class Database {
         		ResultSet quizResult = quizStatement.executeQuery();
         		quizResult.next();
         		int quizID = quizResult.getInt("quizID");
-        		quizStatement.close();
         		questionStatement = connection.prepareStatement("SELECT * FROM Question WHERE week = ?");
         		questionStatement.setInt(1, week);
         		ResultSet questionResult = questionStatement.executeQuery();
@@ -133,8 +132,6 @@ public class Database {
         				answers.add(new Answer(answerID, answer));
         			}
         			questions.add(new Question(questionID, question, answers));
-        			questionStatement.close();
-        			answerStatement.close();
         		}
         		if(!questions.isEmpty()) {
         			if(!quizTaken) {
@@ -146,7 +143,6 @@ public class Database {
         				ResultSet avgScoreResult = avgStatement.executeQuery();
         				avgScoreResult.next();
         				int avgScore = avgScoreResult.getInt("average");
-        				avgStatement.close();
         				userQuizStatement = connection.prepareStatement("SELECT score FROM UserQuiz WHERE week = ?");
         				userQuizStatement.setInt(1, week);
         				ResultSet scoreResult = userQuizStatement.executeQuery();
