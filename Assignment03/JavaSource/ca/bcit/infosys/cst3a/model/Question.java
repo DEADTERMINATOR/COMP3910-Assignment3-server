@@ -12,7 +12,9 @@ public class Question {
 
     @XmlElement(name = "answers")
 	private ArrayList<Answer> answers;
-	
+
+    public Question(){}
+    
 	public Question(int questionID, String question, ArrayList<Answer> answers) {
 		this.questionID = questionID;
 		this.question = question;

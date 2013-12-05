@@ -8,6 +8,8 @@ import javax.enterprise.context.ApplicationScoped;
 public class ActiveUsers {
 	private static HashMap<String, User> loggedIn = new HashMap<String, User>();
 	
+	public ActiveUsers(){}
+	
 	public static HashMap<String, User> getLoggedIn() {
 		return loggedIn;
 	}

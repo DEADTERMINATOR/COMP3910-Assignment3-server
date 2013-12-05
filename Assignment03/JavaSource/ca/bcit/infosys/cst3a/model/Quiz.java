@@ -21,6 +21,8 @@ public class Quiz {
 		this.averageScore = averageScore;
 	}
 
+	public Quiz(){}
+	
 	@XmlElement(name = "quizID")
 	public int getQuizID() {
 		return quizID;
