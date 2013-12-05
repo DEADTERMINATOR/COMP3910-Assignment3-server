@@ -1,8 +1,8 @@
-package ca.bcit.infosys.cst3a.resources;
+package ca.bcit.infosys.cst3a.access;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -16,94 +16,15 @@ import ca.bcit.infosys.cst3a.model.Quiz;
 import ca.bcit.infosys.cst3a.model.User;
 
 @Stateless
-public class Database {
+public class QuizDatabase {
 	/** The data source associated with the database. */
 	@Resource(mappedName = "java:jboss/datasources/quizServer")
 	private DataSource data;
-	
-	public User getUser(String username) {
-		PreparedStatement statement = null;
-        Connection connection = null;
-        try {
-            try {
-                connection = data.getConnection();
-                statement = connection.prepareStatement("SELECT * FROM User WHERE username = ?");
-                statement.setString(1, username);
-                ResultSet result = statement.executeQuery();
-                if(result.next()) {
-                	User user = new User(result.getString("studentNo"), result.getString("username"),
-                			result.getString("password"), result.getString("firstName"), result.getString("lastName"));
-                	return user;
-                }
-                else {
-                	return null;
-                }
-            } finally {
-            	if (statement != null) {
-                    statement.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
-            }
-        } catch (SQLException ex) {
-            System.out.println("Error retrieving users");
-            ex.printStackTrace();
-            return null;
-        }
-	}
-	
-	public boolean validate(User user, String password) {
-		if(user.getPassword().equals(password)) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-	
-	public boolean add(User user) {
-		PreparedStatement statement = null;
-        Connection connection = null;
-        try {
-            try {
-                connection = data.getConnection();
-                User duplicateUser = getUser(user.getUsername());
-                if(duplicateUser == null) {
-                	statement = connection.prepareStatement("INSERT INTO User VALUES (?, ?, ?, ?, ?)");
-                	statement.setString(1, user.getStudentNo());
-                	statement.setString(2, user.getUsername());
-                	statement.setString(3, user.getPassword());
-                	statement.setString(4, user.getFirstName());
-                	statement.setString(5, user.getLastName());
-                	statement.executeUpdate();
-                	return true;
-                }
-                else {
-                	return false;
-                }
-            }
-            finally {
-                if(statement != null) {
-                    statement.close();
-                }
-                if(connection != null) {
-                    connection.close();
-                }
-            }
-        }
-        catch (SQLException ex) {
-            System.out.println("Error adding users");
-            ex.printStackTrace();
-            return false;
-        }
-    }
 	
 	public Quiz getQuiz(int week, User user) {
 		PreparedStatement quizStatement = null;
 		PreparedStatement questionStatement = null;
 		PreparedStatement answerStatement = null;
-		PreparedStatement avgStatement = null;
 		PreparedStatement userQuizStatement = null;
         Connection connection = null;
         boolean quizTaken = quizTaken(week, user);
@@ -138,11 +59,7 @@ public class Database {
         				return new Quiz(quizID, week, questions, -1, -1);
         			}
         			else {
-        				avgStatement = connection.prepareStatement("SELECT AVG(score) AS 'average' FROM UserQuiz WHERE username = ?");
-        				avgStatement.setString(1, user.getUsername());
-        				ResultSet avgScoreResult = avgStatement.executeQuery();
-        				avgScoreResult.next();
-        				int avgScore = avgScoreResult.getInt("average");
+        				int avgScore = getAverageScore(user);
         				userQuizStatement = connection.prepareStatement("SELECT score FROM UserQuiz WHERE week = ?");
         				userQuizStatement.setInt(1, week);
         				ResultSet scoreResult = userQuizStatement.executeQuery();
@@ -162,9 +79,6 @@ public class Database {
                 }
                 if(answerStatement != null) {
                 	answerStatement.close();
-                }
-                if(avgStatement != null) {
-                	avgStatement.close();
                 }
                 if(userQuizStatement != null) {
                 	userQuizStatement.close();
@@ -208,6 +122,107 @@ public class Database {
             System.out.println("Error checking if the quiz was taken");
             ex.printStackTrace();
             return false;
+        }
+	}
+	
+	public int checkAnswers(int week, User user, ArrayList<Integer> userAnswers) {
+		int score = 0;
+		PreparedStatement answerStatement = null;
+		PreparedStatement questionStatement = null;
+        Connection connection = null;
+        try {
+            try {
+            	connection = data.getConnection();
+                answerStatement = connection.prepareStatement("SELECT questionID FROM Answer WHERE answerID = ?");
+                questionStatement = connection.prepareStatement("SELECT answerID FROM Question WHERE questionID = ?");
+                for(int answer: userAnswers) {
+                	answerStatement.setInt(1, answer);
+                	ResultSet answerSet = answerStatement.executeQuery();
+                	answerSet.next();
+                	int questionID = answerSet.getInt("questionID");
+                	questionStatement.setInt(1, questionID);
+                	ResultSet correctAnswer = questionStatement.executeQuery();
+                	correctAnswer.next();
+                	int correctAnswerID = correctAnswer.getInt("answerID");
+                	if(answer == correctAnswerID) {
+                		score++;
+                	}
+                }
+                insertScore(week, user, score);
+                return score;
+            }
+            finally {
+            	if(answerStatement != null) {
+            		answerStatement.close();
+            	}
+            	if(questionStatement != null) {
+            		questionStatement.close();
+            	}
+            	if(connection != null) {
+            		connection.close();
+            	}
+            }
+        }
+        catch (SQLException ex) {
+        	System.out.println("Error checking the answers");
+        	ex.printStackTrace();
+        	return -1;
+        }
+	}
+	
+	public void insertScore(int week, User user, int score) {
+		PreparedStatement statement = null;
+        Connection connection = null;
+        try {
+            try {
+                connection = data.getConnection();
+                statement = connection.prepareStatement("INSERT INTO UserQuiz VALUES(?, ?, ?)");
+                statement.setString(1, user.getUsername());
+                statement.setInt(2, week);
+                statement.setInt(3, score);
+            }
+            finally {
+            	if(statement != null) {
+            		statement.close();
+            	}
+            	if(connection != null) {
+            		connection.close();
+            	}
+            }
+        }
+        catch (SQLException ex) {
+        	System.out.println("Error updating score");
+        	ex.printStackTrace();
+        }
+	}
+	
+	public int getAverageScore(User user) {
+		PreparedStatement statement = null;
+        Connection connection = null;
+        int avgScore = -1;
+        try {
+            try {
+            	connection = data.getConnection();
+            	statement = connection.prepareStatement("SELECT AVG(score) AS 'average' FROM UserQuiz WHERE username = ?");
+				statement.setString(1, user.getUsername());
+				ResultSet avgScoreResult = statement.executeQuery();
+				avgScoreResult.next();
+				avgScore = avgScoreResult.getInt("average");
+				return avgScore;
+            }
+            finally {
+            	if(statement != null) {
+            		statement.close();
+            	}
+            	if(connection != null) {
+            		connection.close();
+            	}
+            }
+        }
+        catch (SQLException ex) {
+        	System.out.println("Error getting the average score");
+        	ex.printStackTrace();
+        	return -1;
         }
 	}
 }

@@ -13,6 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import ca.bcit.infosys.cst3a.access.UserDatabase;
 import ca.bcit.infosys.cst3a.model.ActiveUsers;
 import ca.bcit.infosys.cst3a.model.User;
 
@@ -23,7 +24,7 @@ import java.math.BigInteger;
 @Stateless
 public class UserResource {
 	@EJB
-	private Database db;
+	private UserDatabase db;
 	private String token = null;
 	
 	@GET
