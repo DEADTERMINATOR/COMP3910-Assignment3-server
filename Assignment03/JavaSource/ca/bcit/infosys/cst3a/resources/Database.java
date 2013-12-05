@@ -114,6 +114,7 @@ public class Database {
         		quizStatement = connection.prepareStatement("SELECT quizID FROM Quiz WHERE week = ?");
         		quizStatement.setInt(1, week);
         		ResultSet quizResult = quizStatement.executeQuery();
+        		quizResult.next();
         		int quizID = quizResult.getInt("quizID");
         		quizStatement.close();
         		questionStatement = connection.prepareStatement("SELECT * FROM Question WHERE week = ?");
