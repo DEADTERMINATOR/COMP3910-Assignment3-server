@@ -1,8 +1,10 @@
-package ca.bcit.infosys.cst3a.model;
+package ca.bcit.infosys.cst3a.resources;
 
 import java.util.HashMap;
 
 import javax.enterprise.context.ApplicationScoped;
+
+import ca.bcit.infosys.cst3a.model.User;
 
 @ApplicationScoped
 public class ActiveUsers {

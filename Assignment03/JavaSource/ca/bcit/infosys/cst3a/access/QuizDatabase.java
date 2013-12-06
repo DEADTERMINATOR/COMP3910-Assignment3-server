@@ -136,15 +136,19 @@ public class QuizDatabase {
             	connection = data.getConnection();
                 answerStatement = connection.prepareStatement("SELECT questionID FROM Answer WHERE answerID = ?");
                 questionStatement = connection.prepareStatement("SELECT answerID FROM Question WHERE questionID = ?");
-                for(int answer: userAnswers) {
+                System.out.println("Is userAnswers empty? " + userAnswers.isEmpty());
+                for(Integer answer: userAnswers) {
+                	System.out.println("Chosen Answer ID: " + answer);
                 	answerStatement.setInt(1, answer);
                 	ResultSet answerSet = answerStatement.executeQuery();
                 	answerSet.next();
                 	int questionID = answerSet.getInt("questionID");
+                	System.out.println("Question ID: " + questionID);
                 	questionStatement.setInt(1, questionID);
                 	ResultSet correctAnswer = questionStatement.executeQuery();
                 	correctAnswer.next();
                 	int correctAnswerID = correctAnswer.getInt("answerID");
+                	System.out.println("Actual Answer ID: " + correctAnswerID);
                 	if(answer == correctAnswerID) {
                 		score++;
                 	}
