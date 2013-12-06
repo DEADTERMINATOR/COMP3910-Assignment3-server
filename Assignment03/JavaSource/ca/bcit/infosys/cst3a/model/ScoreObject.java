@@ -8,16 +8,33 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 
 @XmlRootElement(name = "score")
 public class ScoreObject {
+	/** The randomly generated token */
 	private String token;
+	
+	/** The week of the quiz */
 	private int week;
+	
+	/** The quizID */
 	private int quizID;
 	
+	/** The arraylist of user answers */
 	@XmlElementWrapper(name = "userAnswers")
 	@XmlElement(name = "answer")
 	private ArrayList<Integer> answers;
 	
+	/**
+	 * No argument default constructor
+	 */
 	public ScoreObject(){}
 	
+	/**
+	 * Constructor
+	 * 
+	 * @param token - the token
+	 * @param week - the week number
+	 * @param quizID - the quiz ID
+	 * @param answers - the arraylist of user answers
+	 */
 	public ScoreObject(String token, int week, int quizID, ArrayList<Integer> answers) {
 		this.token = token;
 		this.week = week;
@@ -34,7 +51,7 @@ public class ScoreObject {
 	}
 	
 	/**
-	 * @param token the token to set
+	 * @param token - the token to set
 	 */
 	public void setToken(String token) {
 		this.token = token;
@@ -49,7 +66,7 @@ public class ScoreObject {
 	}
 	
 	/**
-	 * @param week the week to set
+	 * @param week - the week to set
 	 */
 	public void setWeek(int week) {
 		this.week = week;
@@ -64,7 +81,7 @@ public class ScoreObject {
 	}
 	
 	/**
-	 * @param quizID the quizID to set
+	 * @param quizID - the quizID to set
 	 */
 	public void setQuizID(int quizID) {
 		this.quizID = quizID;
@@ -78,7 +95,7 @@ public class ScoreObject {
 	}
 	
 	/**
-	 * @param userAnswers the userAnswers to set
+	 * @param userAnswers - the userAnswers to set
 	 */
 	public void setUserAnswers(ArrayList<Integer> answers) {
 		this.answers = answers;

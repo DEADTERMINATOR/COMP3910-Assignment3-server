@@ -15,12 +15,28 @@ import ca.bcit.infosys.cst3a.model.Quiz;
 import ca.bcit.infosys.cst3a.model.ScoreObject;
 import ca.bcit.infosys.cst3a.model.User;
 
+/**
+ * Provides interaction and communication with the client side with regards to functionality
+ * related to the quizzes.
+ * 
+ * @author Mark Ahmadi & Junko Yamamoto
+ *
+ */
 @Path("/quizzes")
 @Stateless
 public class QuizResource {
+	/** Provides CRUD operations for this class. */
 	@EJB
 	private QuizDatabase db;
 	
+	/**
+	 * Returns the quiz given a specified week after the user's session is validated by the
+	 * provided token.
+	 * 
+	 * @param week - the week to retrieve the quiz for.
+	 * @param token - the randomly generated token used to identify the user's session
+	 * @return the quiz for the given week, or null if the session was not validated
+	 */
 	@GET
 	@Path("{week}")
 	@Produces("application/xml")
@@ -35,6 +51,15 @@ public class QuizResource {
 		return null;
 	}
 	
+	/**
+	 * Validates the user's session using the token and scores the quiz for a given week 
+	 * based on the answers the user provided.
+	 * 
+	 * @param so - a object containing the token, the week number, the quizID, and the list of
+	 * user answers
+	 * @return a string containing both the score for the current quiz and the average score for
+	 * the user across all taken quizzes
+	 */
 	@POST
 	@Path("/mark")
 	@Consumes("application/xml")

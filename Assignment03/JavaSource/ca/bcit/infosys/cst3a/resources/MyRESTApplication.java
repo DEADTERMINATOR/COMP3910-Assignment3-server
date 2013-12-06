@@ -8,6 +8,7 @@ public class MyRESTApplication extends Application {
 
 	private Set<Object> singletons = new HashSet<Object>();
 	private Set<Class<?>> empty = new HashSet<Class<?>>();
+	
 	public MyRESTApplication(){
 	     //singletons.add(new HelloWorldResource());
 		 empty.add(UserResource.class);

@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
@@ -16,12 +15,30 @@ import ca.bcit.infosys.cst3a.model.Question;
 import ca.bcit.infosys.cst3a.model.Quiz;
 import ca.bcit.infosys.cst3a.model.User;
 
+/**
+ * Provides CRUD operations for the QuizResource class.
+ * 
+ * @author Mark Ahmadi & Junko Yamamoto
+ *
+ */
 @Stateless
 public class QuizDatabase {
 	/** The data source associated with the database. */
 	@Resource(mappedName = "java:jboss/datasources/quizServer")
 	private DataSource data;
 	
+	/**
+	 * Gets a quiz given a specified week and user. If the quiz has been taken, the quiz is returned
+	 * with the score stored in the database for the specified user, as well as the current average
+	 * score across all quizzes. If the quiz has not been taken, the quiz is returned with a value
+	 * of -1 for both the score and average score. This allows the client side to differentiate between
+	 * the two cases and react accordingly.
+	 * 
+	 * @param week - the week of the quiz to retrieve
+	 * @param user - the user who is logged in to take the quiz
+	 * @return the quiz for the specified week, with either the score and average score, or values of -1
+	 * for both of those values.
+	 */
 	public Quiz getQuiz(int week, User user) {
 		PreparedStatement quizStatement = null;
 		PreparedStatement questionStatement = null;
@@ -97,6 +114,13 @@ public class QuizDatabase {
         }
 	}
 	
+	/**
+	 * Checks if a quiz for a specified week has been taken previously for the specified user.
+	 * 
+	 * @param week - the week of the quiz to retrieve
+	 * @param user - the user who is logged in to take the quiz
+	 * @return true if the quiz has been taken, false if it has not.
+	 */
 	public boolean quizTaken(int week, User user) {
 		PreparedStatement statement = null;
         Connection connection = null;
@@ -128,6 +152,15 @@ public class QuizDatabase {
         }
 	}
 	
+	/**
+	 * Checks the answers provided by the user for a quiz's questions versus the correct answers
+	 * stored in the database and determines the score for the quiz.
+	 * 
+	 * @param week - the week of the quiz to mark
+	 * @param user - the user who is logged in to take the quiz
+	 * @param userAnswers - the list of answers provided by the user
+	 * @return the score
+	 */
 	public int checkAnswers(int week, User user, ArrayList<Integer> userAnswers) {
 		int score = 0;
 		PreparedStatement answerStatement = null;
@@ -139,17 +172,14 @@ public class QuizDatabase {
                 answerStatement = connection.prepareStatement("SELECT questionID FROM Answer WHERE answerID = ?");
                 questionStatement = connection.prepareStatement("SELECT answerID FROM Question WHERE questionID = ?");
                 for(Integer answer: userAnswers) {
-                	System.out.println("Chosen Answer ID: " + answer);
                 	answerStatement.setInt(1, answer);
                 	ResultSet answerSet = answerStatement.executeQuery();
                 	answerSet.next();
                 	int questionID = answerSet.getInt("questionID");
-                	System.out.println("Question ID: " + questionID);
                 	questionStatement.setInt(1, questionID);
                 	ResultSet correctAnswer = questionStatement.executeQuery();
                 	correctAnswer.next();
                 	int correctAnswerID = correctAnswer.getInt("answerID");
-                	System.out.println("Actual Answer ID: " + correctAnswerID);
                 	if(answer == correctAnswerID) {
                 		score++;
                 	}
@@ -176,7 +206,14 @@ public class QuizDatabase {
         }
 	}
 	
-	public void insertScore(int week, User user, int score) {
+	/**
+	 * Inserts the score determined in checkAnswers into the database for the provided user.
+	 * 
+	 * @param week - the week of the quiz to retrieve
+	 * @param user - the user who is logged in to take the quiz
+	 * @param score - the score for the quiz
+	 */
+	private void insertScore(int week, User user, int score) {
 		PreparedStatement statement = null;
         Connection connection = null;
         try {
@@ -203,6 +240,12 @@ public class QuizDatabase {
         }
 	}
 	
+	/**
+	 * Determines the average score across all taken quizzes for the specified user.
+	 * 
+	 * @param user - the user to get the average of
+	 * @return the average score
+	 */
 	public int getAverageScore(User user) {
 		PreparedStatement statement = null;
         Connection connection = null;
