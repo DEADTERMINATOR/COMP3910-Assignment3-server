@@ -137,7 +137,7 @@ public class QuizDatabase {
                 answerStatement = connection.prepareStatement("SELECT questionID FROM Answer WHERE answerID = ?");
                 questionStatement = connection.prepareStatement("SELECT answerID FROM Question WHERE questionID = ?");
                 System.out.println("Is userAnswers empty? " + userAnswers.isEmpty());
-                for(Integer answer: userAnswers) {
+                for(int answer: userAnswers) {
                 	System.out.println("Chosen Answer ID: " + answer);
                 	answerStatement.setInt(1, answer);
                 	ResultSet answerSet = answerStatement.executeQuery();

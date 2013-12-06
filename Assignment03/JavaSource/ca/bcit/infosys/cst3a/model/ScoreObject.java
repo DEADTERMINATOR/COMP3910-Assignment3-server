@@ -10,6 +10,8 @@ public class ScoreObject {
 	private String token;
 	private int week;
 	private int quizID;
+	
+	@XmlElement(name = "answer")
 	private List<Integer> userAnswers;
 	
 	public ScoreObject() {}
@@ -62,7 +64,6 @@ public class ScoreObject {
 	/**
 	 * @return the userAnswers
 	 */
-	@XmlElement(name = "userAnswers")
 	public List<Integer> getUserAnswers() {
 		return userAnswers;
 	}
