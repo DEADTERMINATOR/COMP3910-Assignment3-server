@@ -61,8 +61,9 @@ public class QuizDatabase {
         			}
         			else {
         				int avgScore = getAverageScore(user);
-        				userQuizStatement = connection.prepareStatement("SELECT score FROM UserQuiz WHERE week = ?");
+        				userQuizStatement = connection.prepareStatement("SELECT score FROM UserQuiz WHERE week = ? AND userName = ?");
         				userQuizStatement.setInt(1, week);
+        				userQuizStatement.setString(2, user.getUsername());
         				ResultSet scoreResult = userQuizStatement.executeQuery();
         				scoreResult.next();
         				int score = scoreResult.getInt("score");
@@ -102,8 +103,9 @@ public class QuizDatabase {
         try {
             try {
             	connection = data.getConnection();
-                statement = connection.prepareStatement("SELECT week FROM UserQuiz WHERE week = ?");
+                statement = connection.prepareStatement("SELECT week FROM UserQuiz WHERE week = ? AND userName = ?");
                 statement.setInt(1, week);
+                statement.setString(2, user.getUsername());
                 ResultSet results = statement.executeQuery();
                 if(results.next()) {
                 	return true;
