@@ -126,7 +126,7 @@ public class QuizDatabase {
         }
 	}
 	
-	public int checkAnswers(int week, User user, List<Integer> userAnswers) {
+	public int checkAnswers(int week, User user, ArrayList<Integer> userAnswers) {
 		int score = 0;
 		PreparedStatement answerStatement = null;
 		PreparedStatement questionStatement = null;
@@ -136,8 +136,7 @@ public class QuizDatabase {
             	connection = data.getConnection();
                 answerStatement = connection.prepareStatement("SELECT questionID FROM Answer WHERE answerID = ?");
                 questionStatement = connection.prepareStatement("SELECT answerID FROM Question WHERE questionID = ?");
-                System.out.println("Is userAnswers empty? " + userAnswers.isEmpty());
-                for(int answer: userAnswers) {
+                for(Integer answer: userAnswers) {
                 	System.out.println("Chosen Answer ID: " + answer);
                 	answerStatement.setInt(1, answer);
                 	ResultSet answerSet = answerStatement.executeQuery();
@@ -185,6 +184,7 @@ public class QuizDatabase {
                 statement.setString(1, user.getUsername());
                 statement.setInt(2, week);
                 statement.setInt(3, score);
+                statement.executeUpdate();
             }
             finally {
             	if(statement != null) {

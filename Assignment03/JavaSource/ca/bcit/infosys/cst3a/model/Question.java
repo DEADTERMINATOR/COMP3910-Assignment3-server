@@ -20,6 +20,7 @@ public class Question {
 		this.question = question;
 		this.answersArray = answersArray;
 	}
+	
     @XmlElement(name = "questionID")
 	public int getQuestionID() {
 		return questionID;

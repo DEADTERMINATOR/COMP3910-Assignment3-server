@@ -1,9 +1,10 @@
 package ca.bcit.infosys.cst3a.model;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 
 @XmlRootElement(name = "score")
 public class ScoreObject {
@@ -11,10 +12,18 @@ public class ScoreObject {
 	private int week;
 	private int quizID;
 	
+	@XmlElementWrapper(name = "userAnswers")
 	@XmlElement(name = "answer")
-	private List<Integer> answers;
+	private ArrayList<Integer> answers;
 	
 	public ScoreObject(){}
+	
+	public ScoreObject(String token, int week, int quizID, ArrayList<Integer> answers) {
+		this.token = token;
+		this.week = week;
+		this.quizID = quizID;
+		this.answers = answers;
+	}
 	
 	/**
 	 * @return the token
@@ -64,14 +73,14 @@ public class ScoreObject {
 	/**
 	 * @return the userAnswers
 	 */
-	public List<Integer> getAnswers() {
+	public ArrayList<Integer> getAnswers() {
 		return answers;
 	}
 	
 	/**
 	 * @param userAnswers the userAnswers to set
 	 */
-	public void setUserAnswers(List<Integer> answers) {
+	public void setUserAnswers(ArrayList<Integer> answers) {
 		this.answers = answers;
 	}
 }
