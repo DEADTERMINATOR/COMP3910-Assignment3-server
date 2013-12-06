@@ -12,9 +12,9 @@ public class ScoreObject {
 	private int quizID;
 	
 	@XmlElement(name = "answer")
-	private List<Integer> userAnswers;
+	private List<Integer> answers;
 	
-	public ScoreObject() {}
+	public ScoreObject(){}
 	
 	/**
 	 * @return the token
@@ -64,14 +64,14 @@ public class ScoreObject {
 	/**
 	 * @return the userAnswers
 	 */
-	public List<Integer> getUserAnswers() {
-		return userAnswers;
+	public List<Integer> getAnswers() {
+		return answers;
 	}
 	
 	/**
 	 * @param userAnswers the userAnswers to set
 	 */
-	public void setUserAnswers(List<Integer> userAnswers) {
-		this.userAnswers = userAnswers;
+	public void setUserAnswers(List<Integer> answers) {
+		this.answers = answers;
 	}
 }

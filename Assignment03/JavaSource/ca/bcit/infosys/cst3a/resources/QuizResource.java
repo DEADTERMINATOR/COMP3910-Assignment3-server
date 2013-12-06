@@ -44,7 +44,7 @@ public class QuizResource {
 			return null;
 		}
 		User user = ActiveUsers.getLoggedInUser(so.getToken());
-		int score = db.checkAnswers(so.getWeek(), user, so.getUserAnswers());
+		int score = db.checkAnswers(so.getWeek(), user, so.getAnswers());
 		int averageScore = db.getAverageScore(user);
 		return score + " " + averageScore;
 	}
