@@ -4,7 +4,12 @@ import java.util.ArrayList;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-
+/**
+ * Model class for the Question table.
+ * 
+ * @author Mark Ahmadi & Junko Yamamoto
+ *
+ */
 @XmlRootElement(namespace = "ca.bcit.infosys.cst3a.model")
 public class Question {
 	/** The ID for the question */

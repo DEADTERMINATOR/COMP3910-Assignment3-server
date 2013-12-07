@@ -3,6 +3,12 @@ package ca.bcit.infosys.cst3a.model;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * Model class for the User table.
+ * 
+ * @author Mark Ahmadi & Junko Yamamoto
+ *
+ */
 @XmlRootElement(name = "user")
 public class User {
 	/** The user's student number */

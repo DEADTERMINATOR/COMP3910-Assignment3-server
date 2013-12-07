@@ -6,6 +6,12 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 
+/**
+ * Model class used to package the values sent over POST when a quiz is submitted for scoring.
+ * 
+ * @author Mark Ahmadi & Junko Yamamoto
+ *
+ */
 @XmlRootElement(name = "score")
 public class ScoreObject {
 	/** The randomly generated token */

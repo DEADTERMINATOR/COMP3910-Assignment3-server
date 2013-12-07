@@ -3,6 +3,12 @@ package ca.bcit.infosys.cst3a.model;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * Model class for the Answer table.
+ * 
+ * @author Mark Ahmadi & Junko Yamamoto
+ *
+ */
 @XmlRootElement(namespace = "ca.bcit.infosys.cst3a.model")
 public class Answer {
 	/** The ID of the answer */

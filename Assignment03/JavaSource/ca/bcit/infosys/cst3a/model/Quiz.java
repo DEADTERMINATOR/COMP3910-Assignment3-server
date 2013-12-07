@@ -5,6 +5,12 @@ import java.util.ArrayList;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * Model class for the Quiz table.
+ * 
+ * @author Mark Ahmadi & Junko Yamamoto
+ *
+ */
 @XmlRootElement(name = "quiz")
 public class Quiz {
 	/** The ID for the quiz */

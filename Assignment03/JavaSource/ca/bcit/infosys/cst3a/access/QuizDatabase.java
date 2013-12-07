@@ -247,22 +247,45 @@ public class QuizDatabase {
 	 * @return the average score
 	 */
 	public int getAverageScore(User user) {
-		PreparedStatement statement = null;
+		PreparedStatement sumStatement = null;
+		PreparedStatement weekStatement = null;
+		PreparedStatement questionSumStatement = null;
         Connection connection = null;
         int avgScore = -1;
         try {
             try {
             	connection = data.getConnection();
-            	statement = connection.prepareStatement("SELECT AVG(score) AS 'average' FROM UserQuiz WHERE username = ?");
-				statement.setString(1, user.getUsername());
-				ResultSet avgScoreResult = statement.executeQuery();
-				avgScoreResult.next();
-				avgScore = avgScoreResult.getInt("average");
+            	sumStatement = connection.prepareStatement("SELECT SUM(score) AS 'total' FROM UserQuiz WHERE username = ?");
+				sumStatement.setString(1, user.getUsername());
+				ResultSet totalScoreResult = sumStatement.executeQuery();
+				totalScoreResult.next();
+				double totalScore = totalScoreResult.getInt("total");
+				weekStatement = connection.prepareStatement("SELECT week FROM UserQuiz WHERE username = ?");
+				weekStatement.setString(1, user.getUsername());
+				ResultSet weeksCompleted = weekStatement.executeQuery();
+				questionSumStatement = connection.prepareStatement("SELECT COUNT(questionID) AS 'total' FROM Question WHERE week = ?");
+				double questionCount = 0;
+				while(weeksCompleted.next()) {
+					int nextWeek = weeksCompleted.getInt("week");
+					questionSumStatement.setInt(1, nextWeek);
+					ResultSet questionSumResult = questionSumStatement.executeQuery();
+					questionSumResult.next();
+					int questionSum = questionSumResult.getInt("total");
+					questionCount += questionSum;
+				}
+				double temp = (totalScore / questionCount) * 100;
+				avgScore = (int)temp;
 				return avgScore;
             }
             finally {
-            	if(statement != null) {
-            		statement.close();
+            	if(sumStatement != null) {
+            		sumStatement.close();
+            	}
+            	if(weekStatement != null) {
+            		weekStatement.close();
+            	}
+            	if(questionSumStatement != null) {
+            		questionSumStatement.close();
             	}
             	if(connection != null) {
             		connection.close();
